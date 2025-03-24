@@ -17,10 +17,10 @@
 
         <div class="card-body">
             <div class="mb-3 row">
-                <label class="col-sm-3 form-label">新聞類別</label>
+                <label for="cateAll" class="col-sm-3 form-label">新聞類別</label>
                 <div class="col-md-9">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="全部" name="cateradio" id="cateAll" checked />
+                        <input class="form-check-input" type="radio" value="全部" name="cateradio" id="cateAll"  />
                         <label class="form-check-label" for="cateAll">全部</label>
                     </div>
                     <div class="form-check form-check-inline">
@@ -28,7 +28,7 @@
                         <label class="form-check-label" for="cateMLB">MLB</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="中職" name="cateradio" id="cateTaiwan" />
+                        <input class="form-check-input" type="radio" value="中職" name="cateradio" id="cateTaiwan" checked/>
                         <label class="form-check-label" for="cateTaiwan">中職</label>
                     </div>
                     <div class="form-check form-check-inline">
@@ -142,15 +142,16 @@
         console.log("category radio button");
         const cate = $("input[name='cateradio']:checked").val();
         console.log(cate);
-        //call_ajax();
+        call_ajax();
     }); //event function
 
 
     // event handling for top k radio button
     $("input[name='topkradio']").on('change', function () {
+        console.log("123");
         const topk = $("input[name='topkradio']:checked").val();
         alert('top k:' + topk);
-        //call_ajax();
+        call_ajax();
     }); //event function
 
 
