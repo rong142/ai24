@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app_top_keyword',
     'app_top_person',
+    'app_user_keyword',
 ]
 
 MIDDLEWARE = [

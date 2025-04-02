@@ -23,4 +23,5 @@ urlpatterns = [
     path('hello/', views.hello),
     path('topword/', include('app_top_keyword.urls')),
     path('topperson/', include('app_top_person.urls')),
+    path('userkeyword/', include('app_user_keyword.urls')),
 ]
