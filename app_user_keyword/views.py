@@ -13,7 +13,7 @@ import re
 def reload_df_data():
     # make df be a global variable
     global  df
-    df = pd.read_csv('app_user_keyword/dataset/sportsv_preprocessed.csv', sep='|')
+    df = pd.read_csv('dataset/sportsv_preprocessed.csv', sep='|')
 
 # We should reload df when necessary
 reload_df_data() 

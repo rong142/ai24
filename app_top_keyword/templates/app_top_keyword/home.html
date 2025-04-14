@@ -82,9 +82,25 @@
     </div>
   </div>
 </div>
+
+<!-- 影片 -->
+<div class="col-lg-6 mb-5">
+  <div class="card">
+    <div class="card-header">
+      <h3 class="h6 text-uppercase mb-0">熱門關鍵字相關片段</h3>
+    </div>
+    <div class="card-body" id="video-container">
+      <p>將顯示與關鍵字相關的 YouTube 影片！</p>
+    </div>
+  </div>
+</div>
+
 <!-- 區塊結束 -->
 </div>
+
 </div> <!-- container -->
+
+
 {% endblock %}
 
 
@@ -181,19 +197,21 @@
   function showTopKeys(items) {
     //先清除前一次的資料
     $('#topkeys').empty()
+    $('#video-container').html(`<p>將顯示與熱門關鍵字相關的 YouTube 影片！</p>`); // 重設影片區
 
-    //將內容加上li標籤附加起來，顯示在顯示區"topkeys"
     for (let i = 0; i < items.length; i++) {
-      let item_li = '<li>' + items[i] + '</li>'
-      $('#topkeys').append(item_li)
-    }
+            let name = items[i][0];
+            let freq = items[i][1];
 
-    $('#btn-ok').on('click', function () {
-
-      let wf_pairs = [["大數據", 45], ["高科大", 18], ["資管系", 12],]; //define a JavaScript array
-      showTopKeys(wf_pairs);
-
-    }); //event function
+            let item_html = `
+            <li>
+                <a href="javascript:void(0);" onclick="searchYouTube('${name}')">
+                    ${name} (${freq})
+                </a>
+            </li>
+        `;
+            $('#topkeys').append(item_html);
+        }
 
   } //function
 
@@ -271,6 +289,32 @@
   // 把document, window印出來看看就能理解它們是甚麼
   //console.log(document);
   //console.log(window);
+
+  function searchYouTube(query) {
+    $.ajax({
+        type: 'POST',
+        url: '/topperson/youtube_search/',
+        data: { "keyword": query },  // ← 注意這裡要用 keyword
+        success: function (resp) {
+            let results = resp.results;
+            let result_html = `<h4>搜尋結果：${query}</h4><ul>`;
+
+            for (let video of results) {
+                result_html += `
+                    <li>
+                        <a href="${video.url}" target="_blank">
+                            <img src="${video.thumbnail}" width="120"><br>
+                            ${video.title}
+                        </a>
+                    </li>
+                `;
+            }
+
+            result_html += "</ul>";
+            $('#video-container').html(result_html);
+        }
+    });
+}
 </script>
 
 {% endblock %}

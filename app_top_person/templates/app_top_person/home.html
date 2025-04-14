@@ -20,7 +20,7 @@
                 <label for="cateAll" class="col-sm-3 form-label">新聞類別</label>
                 <div class="col-md-9">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="全部" name="cateradio" id="cateAll"  />
+                        <input class="form-check-input" type="radio" value="全部" name="cateradio" id="cateAll" />
                         <label class="form-check-label" for="cateAll">全部</label>
                     </div>
                     <div class="form-check form-check-inline">
@@ -28,7 +28,8 @@
                         <label class="form-check-label" for="cateMLB">MLB</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="中職" name="cateradio" id="cateTaiwan" checked/>
+                        <input class="form-check-input" type="radio" value="中職" name="cateradio" id="cateTaiwan"
+                            checked />
                         <label class="form-check-label" for="cateTaiwan">中職</label>
                     </div>
                     <div class="form-check form-check-inline">
@@ -40,7 +41,7 @@
                         <label class="form-check-label" for="cateStudent">三級棒球</label>
                     </div>
 
-                    <div class="form-text">新聞類別內定值為"全部"新聞</div>
+                    <div class="form-text">新聞類別內定值為"MLB"新聞</div>
                 </div>
             </div>
             <!-- form group -->
@@ -92,7 +93,7 @@
 <div class="col-lg-6 mb-5">
     <div class="card">
         <div class="card-header">
-            <h3 class="h6 text-uppercase mb-0">熱門關鍵字繪圖</h3>
+            <h3 class="h6 text-uppercase mb-0">熱門人物繪圖</h3>
         </div>
         <div class="card-body">
             <canvas id="mychart"></canvas>
@@ -105,13 +106,26 @@
 <div class="col-lg-6 mb-5">
     <div class="card">
         <div class="card-header">
-            <h3 class="h6 text-uppercase mb-0">熱門關鍵字(頻率次數)</h3>
+            <h3 class="h6 text-uppercase mb-0">熱門人物(頻率次數)</h3>
         </div>
         <div class="card-body">
             <ul id="topkeys"></ul>
         </div>
     </div>
 </div>
+
+<!-- 影片 -->
+<div class="col-lg-6 mb-5">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="h6 text-uppercase mb-0">熱門人物相關片段</h3>
+        </div>
+        <div class="card-body" id="video-container">
+            <p>將顯示與熱門人物相關的 YouTube 影片！</p>
+        </div>
+    </div>
+</div>
+
 <!-- column -->
 {% endblock %}
 
@@ -125,7 +139,7 @@
 <script>
     //Write your JS code here!
 
-    // Call ajax function when page is loaded
+    // 網頁載入時呼叫
     call_ajax()
 
     $('#cate-selected').on('change', function () {
@@ -163,7 +177,7 @@
 
         $.ajax({
             type: 'POST',
-            url: 'http://127.0.0.1:8000/topperson/api_get_topPerson/',
+            url: '/topperson/api_get_topPerson/',
             //url: "http://163.18.23.21:8000/topperson/api_get_topPerson/",
             //url: "http://127.0.0.1:8000/topperson/api_get_topPerson/",
             //url: "http://163.18.80.112:8000/topperson/api_get_topPerson/",
@@ -184,16 +198,24 @@
         }) //ajax
     } //call_ajax
 
-    
+
     //* 顯示關鍵詞資料函數
     function showTopKeys(items) {
-        //先清除前一次的資料
-        $('#topkeys').empty()
+        $('#topkeys').empty();
+        $('#video-container').html(`<p>將顯示與熱門人物相關的 YouTube 影片！</p>`); // 重設影片區
 
-        //將內容加上li標籤附加起來，顯示在顯示區"topkeys"
         for (let i = 0; i < items.length; i++) {
-            let item_li = '<li>' + items[i] + '</li>'
-            $('#topkeys').append(item_li)
+            let name = items[i][0];
+            let freq = items[i][1];
+
+            let item_html = `
+            <li>
+                <a href="javascript:void(0);" onclick="searchYouTube('${name}')">
+                    ${name} (${freq})
+                </a>
+            </li>
+        `;
+            $('#topkeys').append(item_html);
         }
     } //function
 
@@ -274,5 +296,32 @@
             return colors
         }
     } //show chart function
+
+    function searchYouTube(query) {
+    $.ajax({
+        type: 'POST',
+        url: '/topperson/youtube_search/',
+        data: { "keyword": query },  // ← 注意這裡要用 keyword
+        success: function (resp) {
+            let results = resp.results;
+            let result_html = `<h4>搜尋結果：${query}</h4><ul>`;
+
+            for (let video of results) {
+                result_html += `
+                    <li>
+                        <a href="${video.url}" target="_blank">
+                            <img src="${video.thumbnail}" width="120"><br>
+                            ${video.title}
+                        </a>
+                    </li>
+                `;
+            }
+
+            result_html += "</ul>";
+            $('#video-container').html(result_html);
+        }
+    });
+}
+
 </script>
 {% endblock %}

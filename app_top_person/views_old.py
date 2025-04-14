@@ -1,12 +1,9 @@
 from django.shortcuts import render
 import pandas as pd
-import requests
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-# YouTube API Key
-YOUTUBE_API_KEY = "AIzaSyDBhpiP7sfo8JEizxqtL6Rd4HC2phdaA0E"
 
 # load data
 def load_data_topPerson():
@@ -56,44 +53,6 @@ def get_category_topPerson(cate, topk):
         "labels": words,
         "values": freqs}
     return chart_data, wf_pairs  # chart_data is for charting
-
-# YouTube search view
-@csrf_exempt
-def search_youtube(request):
-    if request.method == "POST":
-        keyword = request.POST.get('keyword', '')
-
-        if not keyword:
-            return JsonResponse({'error': 'Missing keyword'}, status=400)
-
-        search_url = "https://www.googleapis.com/youtube/v3/search"
-        params = {
-            'part': 'snippet',
-            'q': f"{keyword} 棒球",
-            'type': 'video',
-            'maxResults': 5,
-            'key': YOUTUBE_API_KEY
-        }
-
-        response = requests.get(search_url, params=params)
-        data = response.json()
-
-        results = []
-        if 'items' in data:
-            for item in data['items']:
-                video_id = item['id']['videoId']
-                video_url = f"https://www.youtube.com/watch?v={video_id}"
-                title = item['snippet']['title']
-                thumbnail = item['snippet']['thumbnails']['default']['url']
-                results.append({
-                    'url': video_url,
-                    'title': title,
-                    'thumbnail': thumbnail
-                })
-
-        return JsonResponse({'results': results})
-
-    return JsonResponse({'error': 'Invalid request'}, status=405)
 
 
 print("app_news_analysis--類別熱門人物載入成功!")
