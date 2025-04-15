@@ -25,4 +25,5 @@ urlpatterns = [
     path('topperson/', include('app_top_person.urls')),
     path('userkeyword/', include('app_user_keyword.urls')),
     path('shotime/', include('app_shotime.urls')),
+    path('userkeyword_assoc/', include('app_user_keyword_association.urls')),
 ]
