@@ -31,6 +31,7 @@ def api_get_top_userkey(request):
     weeks = int(request.POST['weeks'])
     key = userkey.split()
     
+    
     # (2) make df_query global, so it can be used by other functions
     global  df_query 
 
@@ -141,6 +142,11 @@ def count_keyword(df_query, query_keywords):
 #     return time_data
 
 def get_keyword_time_based_freq(df_query):
+    # 如果沒有資料，也要回傳一筆 y=0 資料
+    if df_query.empty:
+        today = datetime.today().strftime('%Y/%m/%d')
+        return [{'x': today, 'y': 0}]
+    
     # 確保日期轉換為 datetime 格式
     date_samples = pd.to_datetime(df_query.date)
     
