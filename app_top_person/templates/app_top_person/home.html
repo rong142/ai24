@@ -298,16 +298,16 @@
     } //show chart function
 
     function searchYouTube(query) {
-    $.ajax({
-        type: 'POST',
-        url: '/topperson/youtube_search/',
-        data: { "keyword": query },  // ← 注意這裡要用 keyword
-        success: function (resp) {
-            let results = resp.results;
-            let result_html = `<h4>搜尋結果：${query}</h4><ul>`;
+        $.ajax({
+            type: 'POST',
+            url: '/topperson/youtube_search/',
+            data: { "keyword": query },  // ← 注意這裡要用 keyword
+            success: function (resp) {
+                let results = resp.results;
+                let result_html = `<h4>搜尋結果：${query}</h4><ul>`;
 
-            for (let video of results) {
-                result_html += `
+                for (let video of results) {
+                    result_html += `
                     <li>
                         <a href="${video.url}" target="_blank">
                             <img src="${video.thumbnail}" width="120"><br>
@@ -315,13 +315,13 @@
                         </a>
                     </li>
                 `;
-            }
+                }
 
-            result_html += "</ul>";
-            $('#video-container').html(result_html);
-        }
-    });
-}
+                result_html += "</ul>";
+                $('#video-container').html(result_html);
+            }
+        });
+    }
 
 </script>
 {% endblock %}
