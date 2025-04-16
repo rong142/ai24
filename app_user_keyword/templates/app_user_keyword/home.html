@@ -1,17 +1,6 @@
 {% extends 'base.html' %}
 
 {% block style %}
-<style>
-  .list-group-item {
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-
-  .list-group-item:hover {
-    background-color: #97CBFF;
-    /* Bootstrap 的 light gray */
-  }
-</style>
 {% endblock %}
 
 {% block title %}關鍵詞熱門度分析{% endblock %}
@@ -28,7 +17,7 @@
     <!-- 輸入條件區塊開始 -->
     <div class="card h-100 d-flex flex-column">
       <div class="card-header">
-        <h3 class="h5 text-uppercase mb-0">輸入條件</h3>
+        <h5 class="h5 text-uppercase mb-0">輸入條件</h5>
       </div>
       <div class="card-body">
         <div class="mb-3 row">
