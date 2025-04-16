@@ -26,8 +26,8 @@
   <link href="{% static 'css/bootstrap-icons.css' %}" rel="stylesheet">
   <link href="{% static 'css/apexcharts.css' %}" rel="stylesheet">
   <link href="{% static 'css/tooplate-mini-finance.css' %}" rel="stylesheet">
-  {% block extra_css %}
-  {% endblock %}
+  {% block extra_css %}{% endblock %}
+  {% block style %}{% endblock %}
 </head>
 
 <body>
@@ -48,34 +48,34 @@
       <!-- Navigation Bar -->
       <nav id="sidebarMenu" class="col-md-2 col-lg-2 d-md-block sidebar collapse" >
         <div class="py-4 px-3">
-          <ul class="nav flex-column align-items-start"> <!-- 確保靠左對齊 -->
+          <ul class="nav flex-column align-items-start custom-nav"> <!-- 確保靠左對齊 -->
             <li class="nav-item">
               <a class="nav-link {% if request.resolver_match.app_name == 'app_top_keyword' %}active{% endif %}" href="{% url 'app_top_keyword:home' %}">
-                <i class="bi bi-fire me-2"></i>
+                <i class="bi bi-fire me-2 fs-4"></i>
                 熱門關鍵詞分析
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link {% if request.resolver_match.app_name == 'app_top_person' %}active{% endif %}" href="{% url 'app_top_person:home' %}">
-                <i class="bi bi-people-fill me-2"></i>
+                <i class="bi bi-people-fill me-2 fs-4"></i>
                 熱門人物排行分析
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link {% if request.resolver_match.app_name == 'app_user_keyword' %}active{% endif %}" href="{% url 'app_user_keyword:home' %}">
-                <i class="bi bi-key-fill me-2"></i>
+                <i class="bi bi-key-fill me-2 fs-4"></i>
                 關鍵詞熱門度分析
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link {% if request.resolver_match.app_name == 'app_shotime' %}active{% endif %}" href="{% url 'app_shotime:home' %}">
-                <i class="bi bi-universal-access me-2"></i>
+                <i class="bi bi-universal-access me-2 fs-4"></i>
                 大谷翔平聲量觀察
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link {% if request.resolver_match.app_name == 'app_user_keyword_association' %}active{% endif %}" href="{% url 'app_user_keyword_association:home' %}">
-                <i class="bi bi-file-earmark-break-fill me-2"></i>
+                <i class="bi bi-file-earmark-break-fill me-2 fs-4"></i>
                 全文檢索與關聯分析
               </a>
             </li>
@@ -100,85 +100,7 @@
   <script src="{% static 'js/apexcharts.min.js' %}"></script>
   <script src="{% static 'js/custom.js' %}"></script>
 
-  <!-- <script type="text/javascript">
-    var options = {
-      series: [13, 43, 22],
-      chart: {
-        width: 380,
-        type: 'pie',
-      },
-      labels: ['Balance', 'Expense', 'Credit Loan',],
-      responsive: [{
-        breakpoint: 480,
-        options: {
-          chart: {
-            width: 200
-          },
-          legend: {
-            position: 'bottom'
-          }
-        }
-      }]
-    };
-
-    var chart = new ApexCharts(document.querySelector("#pie-chart"), options);
-    chart.render();
-  </script> -->
-
-  <!-- <script type="text/javascript">
-    var options = {
-      series: [{
-        name: 'Income',
-        data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
-      }, {
-        name: 'Expense',
-        data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-      }, {
-        name: 'Transfer',
-        data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
-      }],
-      chart: {
-        type: 'bar',
-        height: 350
-      },
-      plotOptions: {
-        bar: {
-          horizontal: false,
-          columnWidth: '55%',
-          endingShape: 'rounded'
-        },
-      },
-      dataLabels: {
-        enabled: false
-      },
-      stroke: {
-        show: true,
-        width: 2,
-        colors: ['transparent']
-      },
-      xaxis: {
-        categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
-      },
-      yaxis: {
-        title: {
-          text: '$ (thousands)'
-        }
-      },
-      fill: {
-        opacity: 1
-      },
-      tooltip: {
-        y: {
-          formatter: function (val) {
-            return "$ " + val + " thousands"
-          }
-        }
-      }
-    };
-
-    var chart = new ApexCharts(document.querySelector("#chart"), options);
-    chart.render();
-  </script> -->
+  
   <!-- Additional Scripts -->
   {% block extra_js %}
   {% endblock %}

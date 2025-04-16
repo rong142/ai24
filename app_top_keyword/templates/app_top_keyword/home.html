@@ -1,102 +1,121 @@
 {% extends 'base.html' %}
 
-{% block title %} 關鍵字 {% endblock %}
+{% block style %}
+<style>
+  .list-group-item {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .list-group-item:hover {
+    background-color: #97CBFF;
+    /* Bootstrap 的 light gray */
+  }
+</style>
+{% endblock %}
+
+{% block title %} 熱門關鍵字分析 {% endblock %}
 
 {% block content %}
 
 <div class="col-lg-12">
-  <h1>各類新聞最熱門的關鍵詞</h1>
+  <h3>各類新聞最熱門的關鍵詞</h3>
   <p>熱門度分析:可以了解新聞關注那些重要的東東</p>
 </div>
 
-<!-- 新聞類別選單--- -->
-<div class="col-lg-6 mb-2">
-  <div class="card">
-    <div class="card-header">
-      <h3 class="h6 text-uppercase mb-0">熱門關鍵字瀏覽與繪圖(資料週期:資料截止時間的前4周)</h3>
-    </div>
-
-    <div class="card-body">
-      <!-- 新聞類別選單 form group -->
-      <div class="mb-3 row">
-        <label class="col-sm-3 form-label">棒球類別</label>
-        <div class="col-md-9">
-          <select id="cate-selected" name="news_category" class="form-select">
-            <!-- <option>請選擇</option> -->
-            <option>全部</option>
-            <option>MLB</option>
-            <option>中職</option>
-            <option>日職</option>
-            <option>三級棒球</option>
-          </select>
-          <div class="form-text">請選擇棒球類別</div>
-        </div>
+<div class="row d-flex align-items-stretch">
+  <!-- 新聞類別選單--- -->
+  <div class="col-lg-6 mb-2">
+    <div class="card h-100 d-flex flex-column">
+      <div class="card-header">
+        <h5 class="h5 text-uppercase mb-0">熱門關鍵字瀏覽與繪圖(資料週期:資料截止時間的前4周)</h5>
       </div>
-      <!-- form group -->
 
-      <!-- 熱門詞多少個?form group -->
-      <div class="mb-3 row">
-        <label class="col-md-3 form-label">多少個熱門詞?</label>
-        <div class="col-md-9">
-          <input id="topk-selected" name="topk" value="10" class="form-control" />
-          <div class="form-text">內定值為10</div>
+      <div class="card-body">
+        <!-- 新聞類別選單 form group -->
+        <div class="mb-3 row">
+          <label class="col-sm-3 form-label">棒球類別</label>
+          <div class="col-md-9">
+            <select id="cate-selected" name="news_category" class="form-select">
+              <!-- <option>請選擇</option> -->
+              <option>全部</option>
+              <option>MLB</option>
+              <option>中職</option>
+              <option>日職</option>
+              <option>三級棒球</option>
+            </select>
+            <div class="form-text">請選擇棒球類別</div>
+          </div>
         </div>
-      </div>
-      <!-- form group -->
+        <!-- form group -->
 
-      <!-- submit按鈕form group -->
-      <div class="mb-3 row">
-        <div class="col-md-9 ms-auto">
-          <button type="button" id="btn-ok" class="btn btn-primary">查詢</button>
+        <!-- 熱門詞多少個?form group -->
+        <div class="mb-3 row">
+          <label class="col-md-3 form-label">多少個熱門詞?</label>
+          <div class="col-md-9">
+            <input id="topk-selected" name="topk" value="10" class="form-control" />
+            <div class="form-text">內定值為10</div>
+          </div>
         </div>
+        <!-- form group -->
+
+        <!-- submit按鈕form group -->
+        <div class="mb-3 row">
+          <div class="col-md-9 ms-auto">
+            <button type="button" id="btn-ok" class="btn btn-primary">查詢</button>
+          </div>
+        </div>
+        <!-- form group -->
       </div>
-      <!-- form group -->
+      <!-- card body -->
     </div>
-    <!-- card body -->
+    <!-- column -->
   </div>
-  <!-- column -->
-</div>
-<!-- 區塊結束 -->
+  <!-- 區塊結束 -->
 
-<!-- 繪圖區塊--- -->
-<div class="col-lg-6 mb-5">
-  <div class="card">
-    <div class="card-header">
-      <h3 class="h6 text-uppercase mb-0">熱門關鍵字繪圖</h3>
-    </div>
-    <div class="card-body">
-      <canvas id="mychart"></canvas>
-    </div>
-  </div>
-</div>
-<!-- 區塊結束 -->
-
-<!-- 熱門關鍵字區塊--- -->
-<div class="col-lg-6 mb-5">
-  <div class="card">
-    <div class="card-header">
-      <h3 class="h6 text-uppercase mb-0">熱門關鍵字</h3>
-    </div>
-    <div class="card-body">
-      <ul id="topkeys"></ul>
+  <!-- 繪圖區塊--- -->
+  <div class="col-lg-6 mb-2">
+    <div class="card h-100 d-flex flex-column">
+      <div class="card-header">
+        <h5 class="h5 text-uppercase mb-0">熱門關鍵字繪圖</h5>
+      </div>
+      <div class="card-body">
+        <canvas id="mychart"></canvas>
+      </div>
     </div>
   </div>
+  <!-- 區塊結束 -->
 </div>
 
-<!-- 影片 -->
-<div class="col-lg-6 mb-5">
-  <div class="card">
-    <div class="card-header">
-      <h3 class="h6 text-uppercase mb-0">熱門關鍵字相關片段</h3>
-    </div>
-    <div class="card-body" id="video-container">
-      <p>將顯示與關鍵字相關的 YouTube 影片！</p>
+<div class="row d-flex align-items-stretch" style="max-height: 425px;">
+  <!-- 熱門關鍵字區塊--- -->
+  <div class="col-lg-6 mb-5">
+    <div class="card h-100 d-flex flex-column">
+      <div class="card-header">
+        <h5 class="h5 text-uppercase mb-0">熱門關鍵字</h5>
+      </div>
+      <div class="card-body">
+        <ul id="topkeys" class="list-group" style="height: 350px; overflow-y: auto;"></ul>
+      </div>
     </div>
   </div>
+
+  <!-- 影片 -->
+  <div class="col-lg-6 mb-5">
+    <div class="card h-100 d-flex flex-column">
+      <div class="card-header">
+        <h5 class="h5 text-uppercase mb-0">熱門關鍵字相關片段</h5>
+      </div>
+      <div class="card-body" id="video-container" style="height: 350px; overflow-y: auto;">
+        <p>點選左方關鍵字，將播放相關的YouTube影片！</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 區塊結束 -->
+</div>
 </div>
 
-<!-- 區塊結束 -->
-</div>
 
 </div> <!-- container -->
 
@@ -197,21 +216,24 @@
   function showTopKeys(items) {
     //先清除前一次的資料
     $('#topkeys').empty()
-    $('#video-container').html(`<p>將顯示與熱門關鍵字相關的 YouTube 影片！</p>`); // 重設影片區
+    $('#video-container').html(`<p>點選左方關鍵字，將播放相關的YouTube影片！</p>`); // 重設影片區
 
     for (let i = 0; i < items.length; i++) {
-            let name = items[i][0];
-            let freq = items[i][1];
+      let name = items[i][0];
+      let freq = items[i][1];
 
-            let item_html = `
-            <li>
-                <a href="javascript:void(0);" onclick="searchYouTube('${name}')">
-                    ${name} (${freq})
-                </a>
-            </li>
+      let item_html = `
+
+            <a href="javascript:void(0);" onclick="searchYouTube('${name}')" class="text-decoration-none text-dark">
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                ${name} 
+                <span class="badge bg-primary rounded-pill">${freq}</span>
+              </li>
+            </a>
+
         `;
-            $('#topkeys').append(item_html);
-        }
+      $('#topkeys').append(item_html);
+    }
 
   } //function
 
@@ -292,29 +314,29 @@
 
   function searchYouTube(query) {
     $.ajax({
-        type: 'POST',
-        url: '/topperson/youtube_search/',
-        data: { "keyword": query },  // ← 注意這裡要用 keyword
-        success: function (resp) {
-            let results = resp.results;
-            let result_html = `<h4>搜尋結果：${query}</h4><ul>`;
+      type: 'POST',
+      url: '/topperson/youtube_search/',
+      data: { "keyword": query },  // ← 注意這裡要用 keyword
+      success: function (resp) {
+        let results = resp.results;
+        let result_html = `<h5>搜尋結果：${query}</h5><div class="list-group">`;
 
-            for (let video of results) {
-                result_html += `
-                    <li>
-                        <a href="${video.url}" target="_blank">
-                            <img src="${video.thumbnail}" width="120"><br>
-                            ${video.title}
-                        </a>
-                    </li>
+        for (let video of results) {
+          result_html += `
+                    <a href="${video.url}" target="_blank" class="list-group-item list-group-item-action d-flex align-items-start">
+                      <img src="${video.thumbnail}" width="120" class="me-3 rounded" />
+                      <div>
+                        <h6 class="text-uppercase mb-0" style="font-size: 18px;">${video.title}</h6>
+                      </div>
+                    </a>
                 `;
-            }
-
-            result_html += "</ul>";
-            $('#video-container').html(result_html);
         }
+
+        result_html += "</ul>";
+        $('#video-container').html(result_html);
+      }
     });
-}
+  }
 </script>
 
 {% endblock %}
