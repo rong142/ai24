@@ -1,264 +1,193 @@
-{% extends 'base.html' %} {% block title %}
-全文檢索與關聯分析
-{% endblock %} {% block content %}
-        <div class="col-lg-12">
-          <h1>全文檢索與你關心的關鍵詞關聯分析</h1>
-          <p>
-            對你想要了解的議題進行全文檢索，找出有哪些詞與你的關鍵詞一起出現?
-          </p>
-        </div>
+{% extends 'base.html' %}
 
-        <div class="col-lg-6 mb-2">
-          <!-- 輸入條件區塊開始 -->
-          <div class="card">
-            <div class="card-header">
-              <h3 class="h6 text-uppercase mb-0">輸入條件</h3>
-            </div>
-            <div class="card-body">
-              <div class="row mb-3">
-                <label class="col-md-3 col-form-label">關心哪個關鍵詞?</label>
-                <div class="col-md-9">
-                  <input
-                    id="input_keyword"
-                    name="userkey"
-                    value="佐佐木朗希 大谷翔平"
-                    class="form-control"
-                  />
-                  <div class="form-text">
-                    全文搜尋，可輸入多個關鍵詞或片段詞句，以空白隔開。
-                  </div>
-                </div>
-              </div>
+{% block style %}
+<style>
+  .list-group-item {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
 
-              <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">條件</label>
+  .list-group-item:hover {
+    background-color: #97CBFF;
+    /* Bootstrap 的 light gray */
+  }
+</style>
+{% endblock %}
 
-                <div class="col-md-9">
-                  <div class="form-check form-check-inline">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      value="and"
-                      name="condradio"
-                      id="condradio1"
-                      checked
-                    />
-                    <label class="form-check-label" for="condradio1">and</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      value="or"
-                      name="condradio"
-                      id="condradio2"
-                    />
-                    <label class="form-check-label" for="condradio2">or</label>
-                  </div>
-                </div>
-              </div>
+{% block title %}全文檢索與關聯分析{% endblock %}
 
-              <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">新聞類別</label>
-                <div class="col-md-9">
-                  <div class="form-check form-check-inline">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      value="全部"
-                      name="cateradio"
-                      id="cateradio1"
-                      checked
-                    />
-                    <label class="form-check-label" for="cateradio1">全部</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      value="MLB"
-                      name="cateradio"
-                      id="cateradio2"
-                    />
-                    <label class="form-check-label" for="cateradio2">MLB</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      value="中職"
-                      name="cateradio"
-                      id="cateradio3"
-                    />
-                    <label class="form-check-label" for="cateradio3">中職</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      value="日職"
-                      name="cateradio"
-                      id="cateradio4"
-                    />
-                    <label class="form-check-label" for="cateradio4">日職</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      value="三級棒球"
-                      name="cateradio"
-                      id="cateradio5"
-                    />
-                    <label class="form-check-label" for="cateradio5">三級棒球</label>
-                  </div>
-                </div>
-              </div>
-              <div class="row mb-3">
-                <label class="col-md-3 col-form-label">最近多少周?</label>
-                <div class="col-md-9">
-                  <div class="form-check form-check-inline">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      value="1"
-                      name="wkradio"
-                      id="wkradio1"
-                    />
-                    <label class="form-check-label" for="wkradio1">1</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      value="2"
-                      name="wkradio"
-                      id="wkradio2"
-                    />
-                    <label class="form-check-label" for="wkradio2">2</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      value="3"
-                      name="wkradio"
-                      id="wkradio3"
-                    />
-                    <label class="form-check-label" for="wkradio3">3</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      value="4"
-                      name="wkradio"
-                      id="wkradio4"
-                    />
-                    <label class="form-check-label" for="wkradio4">4</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      value="6"
-                      name="wkradio"
-                      id="wkradio6"
-                    />
-                    <label class="form-check-label" for="wkradio6">6</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      value="8"
-                      name="wkradio"
-                      id="wkradio8"
-                    />
-                    <label class="form-check-label" for="wkradio8">8</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      value="50"
-                      name="wkradio"
-                      id="wkradio12"
-                      checked
-                    />
-                    <label class="form-check-label" for="wkradio12">50</label>
-                  </div>
-                  <div class="form-text">
-                    以最新資料時間為準，往前推多少周?
-                  </div>
-                </div>
-              </div>
-              <div class="row mb-3">
-                <div class="col-md-9 ms-auto">
-                  <button type="button" id="btn_ok" class="btn btn-primary">
-                    查詢
-                  </button>
-                </div>
-              </div>
+{% block content %}
+
+<div class="col-lg-12">
+  <h3>全文檢索與你關心的關鍵詞關聯分析</h3>
+  <p>對你想要了解的議題進行全文檢索，找出有哪些詞與你的關鍵詞一起出現？</p>
+</div>
+
+<div class="row d-flex align-items-stretch" style="max-height: 600px;">
+  <div class="col-lg-6 mb-2">
+    <!-- 輸入條件區塊開始 -->
+    <div class="card h-100 d-flex flex-column">
+      <div class="card-header">
+        <h3 class="h5 text-uppercase mb-0">輸入條件</h3>
+      </div>
+      <div class="card-body">
+        <div class="row mb-3">
+          <label class="col-md-3 col-form-label">關心哪個關鍵詞?</label>
+          <div class="col-md-9">
+            <input id="input_keyword" name="userkey" value="佐佐木朗希 大谷翔平" class="form-control" />
+            <div class="form-text">
+              全文搜尋，可輸入多個關鍵詞或片段詞句，以空白隔開。
             </div>
           </div>
         </div>
-        <!-- 輸入區塊結束-->
 
-        <!-- 繪圖區塊-->
-        <div class="col-lg-6 mb-2">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="h6 text-uppercase mb-0">這些詞與它同時出現喔!</h3>
+        <div class="row mb-3">
+          <label class="col-sm-3 col-form-label">條件</label>
+
+          <div class="col-md-9">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" value="and" name="condradio" id="condradio1" checked />
+              <label class="form-check-label" for="condradio1">and</label>
             </div>
-            <div class="card-body">
-              <div id="cloud"></div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" value="or" name="condradio" id="condradio2" />
+              <label class="form-check-label" for="condradio2">or</label>
             </div>
           </div>
         </div>
-        <!-- 區塊結束-->
 
-        <!-- 新聞連結區塊-->
-        <div class="col-lg-6 mb-2">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="h6 text-uppercase mb-0">以下新聞與它有關(取數篇展示)</h3>
+        <div class="row mb-3">
+          <label class="col-sm-3 col-form-label">新聞類別</label>
+          <div class="col-md-9">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" value="全部" name="cateradio" id="cateradio1" checked />
+              <label class="form-check-label" for="cateradio1">全部</label>
             </div>
-            <div class="card-body">
-              <h2 id="num_articles"></h2>
-              <ul class="list-group" id="newslinks"></ul>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" value="MLB" name="cateradio" id="cateradio2" />
+              <label class="form-check-label" for="cateradio2">MLB</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" value="中職" name="cateradio" id="cateradio3" />
+              <label class="form-check-label" for="cateradio3">中職</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" value="日職" name="cateradio" id="cateradio4" />
+              <label class="form-check-label" for="cateradio4">日職</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" value="三級棒球" name="cateradio" id="cateradio5" />
+              <label class="form-check-label" for="cateradio5">三級棒球</label>
             </div>
           </div>
         </div>
-        <!-- 區塊結束-->
-
-        <!-- 同時出現的關鍵字區塊-->
-        <div class="col-lg-6 mb-2">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="h6 text-uppercase mb-0">關鍵字所在的段落(取數段展示)</h3>
+        <div class="row mb-3">
+          <label class="col-md-3 col-form-label">最近多少周?</label>
+          <div class="col-md-9">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" value="1" name="wkradio" id="wkradio1" />
+              <label class="form-check-label" for="wkradio1">1</label>
             </div>
-            <div class="card-body">
-              <!-- 這個標籤顯示包含該關鍵詞的段落 -->
-              <ul class="list-group" id="same_paragraph"></ul>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" value="2" name="wkradio" id="wkradio2" />
+              <label class="form-check-label" for="wkradio2">2</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" value="3" name="wkradio" id="wkradio3" />
+              <label class="form-check-label" for="wkradio3">3</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" value="4" name="wkradio" id="wkradio4" />
+              <label class="form-check-label" for="wkradio4">4</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" value="6" name="wkradio" id="wkradio6" />
+              <label class="form-check-label" for="wkradio6">6</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" value="8" name="wkradio" id="wkradio8" />
+              <label class="form-check-label" for="wkradio8">8</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" value="50" name="wkradio" id="wkradio12" checked />
+              <label class="form-check-label" for="wkradio12">50</label>
+            </div>
+            <div class="form-text">
+              以最新資料時間為準，往前推多少周?
             </div>
           </div>
         </div>
-        <!-- 區塊結束-->
-
-        <!-- 同時出現的關鍵字區塊-->
-        <div class="col-lg-6 mb-2">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="h6 text-uppercase mb-0">與它同時出現的關鍵字</h3>
-            </div>
-            <div class="card-body">
-              <ul id="related_words"></ul>
-            </div>
+        <div class="row mb-3">
+          <div class="col-md-9 ms-auto">
+            <button type="button" id="btn_ok" class="btn btn-primary">
+              查詢
+            </button>
           </div>
         </div>
-        <!-- 區塊結束-->
-        {% endblock %} {% block extra_js %}
+      </div>
+    </div>
+  </div>
+  <!-- 輸入區塊結束-->
+
+  <!-- 繪圖區塊-->
+  <div class="col-lg-6 mb-2">
+    <div class="card h-100 d-flex flex-column">
+      <div class="card-header align-items-center">
+        <h3 class="h5 text-uppercase mb-0">這些詞與它同時出現喔!</h3>
+      </div>
+      <div class="card-body text-center ">
+        <div id="cloud"></div>
+      </div>
+    </div>
+  </div>
+  <!-- 區塊結束-->
+</div>
+
+
+<div class="row d-flex align-items-stretch" style="max-height: 800px;">
+  <!-- 新聞連結區塊-->
+  <div class="col-lg-6 mb-2">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="text-uppercase mb-0">以下新聞與它有關(取數篇展示)</h3>
+      </div>
+      <div class="card-body">
+        <h2 id="num_articles"></h2>
+        <ul class="list-group" id="newslinks"></ul>
+      </div>
+    </div>
+  </div>
+  <!-- 區塊結束-->
+
+  <!-- 同時出現的關鍵字區塊-->
+  <div class="col-lg-6 mb-2">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="text-uppercase mb-0">關鍵字所在的段落(取數段展示)</h3>
+      </div>
+      <div class="card-body">
+        <!-- 這個標籤顯示包含該關鍵詞的段落 -->
+        <ul class="list-group" id="same_paragraph"></ul>
+      </div>
+    </div>
+  </div>
+  <!-- 區塊結束-->
+</div>
+
+
+<!-- 同時出現的關鍵字區塊-->
+<div class="col-lg-6 mb-2">
+  <div class="card">
+    <div class="card-header">
+      <h3 class="h6 text-uppercase mb-0">與它同時出現的關鍵字</h3>
+    </div>
+    <div class="card-body">
+      <ul id="related_words"></ul>
+    </div>
+  </div>
+</div>
+<!-- 區塊結束-->
+{% endblock %} {% block extra_js %}
 
 <!-- chartjs-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
@@ -320,20 +249,20 @@ src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js">
       success: function (received) {
         //若查無資料，顯示提醒訊息
         if (received['error']) {
-            alert('檢索異常回應: ' + received['error'])
-            return 0
-        }	
+          alert('檢索異常回應: ' + received['error'])
+          return 0
+        }
         // display number of articles or stories
         const num_articles = received["num_articles"];
         $("#num_articles").empty();
         $("#num_articles").append(`<h2 style="color:red">總篇數:${num_articles}</h2>`);
-        
+
         // show news title and link
         const newslinks = received["newslinks"];
         $("#newslinks").empty();
         // show news title and link
         for (let i = 0; i < newslinks.length; i++) {
-          const items =`
+          const items = `
             <li class="list-group-item py-2 border-bottom">
                 <div class="d-flex align-items-center">
                     <span class="badge bg-secondary me-2 px-2 py-1">${newslinks[i].category}</span>
@@ -347,7 +276,7 @@ src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js">
         const related_words = received["related_words"];
         $("#related_words").empty();
         for (let i = 0; i < related_words.length; i++) {
-          $("#related_words").append(   `<li>${related_words[i]}</li>`  );
+          $("#related_words").append(`<li>${related_words[i]}</li>`);
         }
 
         // show paragraphs containing the user keywords
