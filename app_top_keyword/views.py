@@ -85,4 +85,3 @@ def search_youtube(request):
 
 print("app_top_keywords--類別熱門關鍵字載入成功!")
 
-

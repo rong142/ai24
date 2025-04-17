@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 # YouTube API Key
-YOUTUBE_API_KEY = "AIzaSyDBhpiP7sfo8JEizxqtL6Rd4HC2phdaA0E"
+YOUTUBE_API_KEY = "AIzaSyBH9M2nk7h1ghKHXC93l-Y09wJd9z13wKc"
 
 # load data
 def load_data_topPerson():
