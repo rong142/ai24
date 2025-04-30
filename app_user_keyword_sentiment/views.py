@@ -21,7 +21,7 @@ def load_df_data():
 
 # call load data function when starting server
 load_df_data_v1()
-# load_df_data()
+#load_df_data()
 
 def home(request):
     return render(request, 'app_user_keyword_sentiment/home.html')
@@ -69,13 +69,19 @@ def get_article_sentiment(df_query):
     sentiPercnt = {'Positive': 0, 'Negative': 0, 'Neutral': 0}
     numberOfArticle = len(df_query)
     for senti in df_query.sentiment:
-        # determine sentimental polarity
-        if float(senti) >= 0.6:
-            sentiCount['Positive'] += 1
-        elif float(senti) <= 0.4:
-            sentiCount['Negative'] += 1
-        else:
+        try:
+            senti = float(senti)
+            # determine sentimental polarity
+            if float(senti) >= 0.6:
+                sentiCount['Positive'] += 1
+            elif float(senti) <= 0.4:
+                sentiCount['Negative'] += 1
+            else:
+                sentiCount['Neutral'] += 1
+        except ValueError:
+            # 當遇到「暫無」或其他非數字字串，視為中立或略過
             sentiCount['Neutral'] += 1
+        
     for polar in sentiCount :
         try:
             sentiPercnt[polar]=int(sentiCount[polar]/numberOfArticle*100)
@@ -96,9 +102,16 @@ def get_daily_basis_sentiment_count(df_query, sentiment_type='pos', freq_type='D
         lambda_function = lambda senti: 1 if senti > 0.4 & senti < 0.4 else 0 #介於中間為中立
     else:
         return None 
+    
+    def safe_to_float(senti):
+        try:
+            return float(senti)
+        except ValueError:
+            return None  # 遇到 "暫無" 這類無法轉型的資料就跳過
+    sentiments = df_query.sentiment.apply(safe_to_float)
         
     freq_df = pd.DataFrame({'date_index': pd.to_datetime(df_query.date),
-                             'frequency': [lambda_function(senti) for senti in df_query.sentiment]})
+                             'frequency': [lambda_function(s) if s is not None else 0 for s in sentiments]})
     # Group rows by the date to the daily number of articles. 加總合併同一天新聞，篇數就被計算好了
     freq_df_group = freq_df.groupby(pd.Grouper(key='date_index',freq=freq_type)).sum()
     
@@ -106,7 +119,7 @@ def get_daily_basis_sentiment_count(df_query, sentiment_type='pos', freq_type='D
     freq_df_group.reset_index(inplace=True)
     
     # x,y，用於畫趨勢線圖
-    xy_line_data = [{'x':date.strftime('%Y-%m-%d'),'y':freq} for date, freq in zip(freq_df_group.date_index,freq_df_group.frequency)]
+    xy_line_data = [{'x':date.strftime('%Y/%m/%d'),'y':freq} for date, freq in zip(freq_df_group.date_index,freq_df_group.frequency)]
     return xy_line_data
 
 # Searching keywords from "content" column
@@ -117,7 +130,7 @@ def filter_df_via_content(query_keywords, cond, cate, weeks):
     end_date = df.date.max()
     
     # start date
-    start_date_delta = (datetime.strptime(end_date, '%Y-%m-%d').date() - timedelta(weeks=weeks)).strftime('%Y-%m-%d')
+    start_date_delta = (datetime.strptime(end_date, '%Y/%m/%d').date() - timedelta(weeks=weeks)).strftime('%Y/%m/%d')
     start_date_min = df.date.min()
     # set start_date as the larger one from the start_date_delta and start_date_min 開始時間選資料最早時間與周數:兩者較晚者
     start_date = max(start_date_delta,   start_date_min)
@@ -150,5 +163,3 @@ def filter_df_via_content(query_keywords, cond, cate, weeks):
 
 
 print("app_userkey_sentiment was loaded!")
-
-
