@@ -79,6 +79,12 @@
                 全文檢索與關聯分析
               </a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.app_name == 'app_user_keyword_sentiment' %}active{% endif %}" href="{% url 'app_user_keyword_sentiment:home' %}">
+                <i class="bi bi-file-earmark-break-fill me-2 fs-4"></i>
+                關鍵詞的情緒分析
+              </a>
+            </li>
           </ul>
         </div>
       </nav>
