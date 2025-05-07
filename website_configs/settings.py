@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'app_shotime',
     'app_user_keyword_association',
     'app_user_keyword_sentiment',
+    'app_top_person_db',
+
 ]
 
 MIDDLEWARE = [

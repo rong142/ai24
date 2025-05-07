@@ -85,6 +85,18 @@
                 關鍵詞的情緒分析
               </a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.app_name == 'app_top_person_db' %}active{% endif %}" href="{% url 'app_top_person_db:home' %}">
+                <i class="bi bi-file-earmark-break-fill me-2 fs-4"></i>
+                熱門人物(從資料庫查詢)
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.app_name == 'app_top_person_db:calculate_top_person' %}active{% endif %}" href="{% url 'app_top_person_db:calculate_top_person' %}">
+                <i class="bi bi-file-earmark-break-fill me-2 fs-4"></i>
+                熱門人物立刻計算(管理者定時執行)
+              </a>
+            </li>
           </ul>
         </div>
       </nav>
