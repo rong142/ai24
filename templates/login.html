@@ -1,0 +1,178 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>輿情分析平台</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: "Noto Sans TC", sans-serif;
+      background: url('{% static "images/background.jpg" %}') no-repeat center center / cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login {
+      width: 600px;
+      padding: 40px;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 20px;
+      border: 5px solid #fff;
+      box-shadow: 0 0 30px #000;
+      backdrop-filter: blur(6px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    h1 {
+      color: #fff;
+      margin-bottom: 30px;
+      text-align: center;
+      font-size: 28px;
+      letter-spacing: 1px;
+    }
+
+    .form {
+      width: 100%;
+      text-align: center;
+    }
+
+    .loginGroup {
+      margin-bottom: 25px;
+    }
+
+    .loginGroup label {
+      color: #fff;
+      font-size: 16px;
+      font-weight: 400;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .loginGroup input {
+      padding: 12px;
+      width: 80%;
+      border: 2px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+      text-align: center;
+      margin: 0 auto;
+    }
+
+    .loginGroup input:focus {
+      border-color: #72a8f0;
+      outline: none;
+    }
+
+    .btnGroup {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .btn {
+      padding: 12px 40px;
+      border-radius: 6px;
+      border: none;
+      font-size: 16px;
+      font-weight: 500;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .btnAccess {
+      background-color: #2bc42b;
+    }
+
+    .btnAccess:hover {
+      background-color: #1d9a1d;
+    }
+
+    .btnCancel {
+      background-color: #f08282;
+    }
+
+    .btnCancel:hover {
+      background-color: #d66a6a;
+    }
+    .text-link {
+        color: #f08282;
+        text-decoration: none;
+        transition: color 0.3s ease, text-decoration 0.3s ease;
+    }
+
+    .text-link:hover {
+        color: #ccc; /* 滑鼠滑過時文字變灰色 */
+        text-decoration: underline; /* 滑鼠滑過時顯示底線 */
+    }
+    .messages {
+        list-style: none;
+        padding: 0;
+        margin: 10px 0;
+    }
+    .messages li {
+        padding: 10px;
+        margin-bottom: 5px;
+        border-radius: 5px;
+    }
+    .messages .error {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+    .messages .success {
+        background-color: #d4edda;
+        color: #155724;
+    }
+  </style>
+</head>
+<body>
+  <div class="login">
+    <form class="form" method="post">
+      {% csrf_token %}
+      <h1>輿情分析平台</h1>
+
+      <!-- 顯示訊息 -->
+      {% if messages %}
+      <ul class="messages">
+          {% for message in messages %}
+              <li class="{{ message.tags }}">{{ message }}</li>
+          {% endfor %}
+      </ul>
+      {% endif %}
+
+      <div class="loginGroup">
+        <label for="userID">使用者名稱</label>
+        <input type="text" id="userID" name="username" placeholder="請輸入使用者名稱">
+      </div>
+
+      <div class="loginGroup">
+        <label for="password">密碼</label>
+        <input type="password" id="password" name="password" placeholder="請輸入密碼">
+      </div>
+
+      <div class="btnGroup" style="display: flex; flex-direction: column; align-items: center;">
+        <button type="submit" class="btn btnAccess" style="margin-bottom: -13px;">登入</button>
+        <a href="{% url 'register' %}" class="text-link">建立帳戶</a>
+      </div>
+    </form>
+  </div>
+</body>
+
+  </script>
+
+</html>

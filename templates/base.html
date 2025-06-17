@@ -50,7 +50,7 @@
         <div class="py-4 px-3">
           <ul class="nav flex-column align-items-start custom-nav"> <!-- 確保靠左對齊 -->
             <li class="nav-item">
-              <a class="nav-link {% if request.resolver_match.app_name == 'app_top_keyword' %}active{% endif %}" href="{% url 'app_top_keyword:home' %}">
+              <a class="nav-link {% if request.resolver_match.app_name == 'app_user_keyword_ai' %}active{% endif %}" href="{% url 'app_user_keyword_ai:home' %}">
                 <i class="bi bi-fire me-2 fs-4"></i>
                 熱門關鍵詞分析
               </a>
@@ -85,12 +85,12 @@
                 關鍵詞的情緒分析
               </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link {% if request.resolver_match.app_name == 'app_top_person_db' %}active{% endif %}" href="{% url 'app_top_person_db:home' %}">
                 <i class="bi bi-file-earmark-break-fill me-2 fs-4"></i>
                 熱門人物(從資料庫查詢)
               </a>
-            </li>
+            </li> -->
             <li class="nav-item">
               <a class="nav-link {% if request.resolver_match.app_name == 'app_top_person_db:calculate_top_person' %}active{% endif %}" href="{% url 'app_top_person_db:calculate_top_person' %}">
                 <i class="bi bi-file-earmark-break-fill me-2 fs-4"></i>

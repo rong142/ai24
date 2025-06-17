@@ -1,0 +1,177 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>資料集選擇 - 輿情分析平台</title>
+    <style>
+        body {
+            font-family: "Noto Sans TC", sans-serif;
+            background-color: #eef2f7;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #111;
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            font-weight: bold;
+            margin-bottom: 6px;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="file"],
+        select {
+            width: 100%;
+            padding: 14px 16px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            background-color: #fff;
+            box-sizing: border-box;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .btn:hover {
+            background-color: #218838;
+        }
+
+        .btn-change {
+            width: 100%;
+            padding: 14px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .btn-change:hover {
+            background-color: #0056b3;
+        }
+
+        .link {
+            margin-top: 20px;
+            display: block;
+            font-size: 0.95rem;
+            color: #dc3545;
+            text-decoration: none;
+        }
+
+        .messages {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        .messages li {
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+
+        .messages .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .messages .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .logout-link {
+            color: #007bff;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+
+        .logout-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- 右上角顯示使用者名稱和登出連結 -->
+        <div style="position: absolute; top: 20px; right: 20px; font-size: 1rem;">
+            <span>歡迎，{{ request.user.username }}</span>
+            <a href="{% url 'logout' %}" class="logout-link">登出</a>
+        </div>
+
+        <h1>輿情分析平台</h1>
+
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <!-- 上傳資料集 -->
+        <div class="section">
+            <label for="dataset_name">上傳新的資料集</label>
+            <form method="POST" action="{% url 'upload_dataset' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="text" name="dataset_name" placeholder="請輸入資料集名稱" required>
+                <label for="dataset">上傳資料檔案</label>
+                <input type="file" name="dataset" required>
+                <button type="submit" class="btn">上傳</button>
+            </form>
+        </div>
+
+        <!-- 選擇既有資料集 -->
+        <div class="section"  style="margin-top: 40px;">
+            <form method="GET" action="{% url 'select_dataset' %}">
+                {% csrf_token %}
+                <label for="dataset_id">選擇既有資料集</label>
+                <select name="dataset_id" required>
+                    {% for dataset in datasets %}
+                        <option value="{{ dataset.id }}">{{ dataset.name }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn-change">選擇</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

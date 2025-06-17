@@ -38,13 +38,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'app_baseball',
     'app_top_keyword',
     'app_top_person',
+    'app_top_person_ai',
     'app_user_keyword',
+    'app_user_keyword_ai',
     'app_shotime',
     'app_user_keyword_association',
     'app_user_keyword_sentiment',
     'app_top_person_db',
+
 
 ]
 
@@ -122,9 +126,13 @@ USE_L10N = True
 
 USE_TZ = True
 
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/login/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
+
+AUTH_USER_MODEL = 'auth.User'
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
